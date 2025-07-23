@@ -7,85 +7,85 @@ let imagenInput = d.querySelector(".imagen");
 let observacionInput = d.querySelector(".observacion");
 let btnGuardar = d.querySelector(".btn-guardar");
 let tabla = d.querySelector(".table tbody");
-let buscadorInput = d.querySelector(".buscador"); 
+let buscadorInput = d.querySelector(".buscador");
 let btnExportar = d.querySelector(".btn-exportar");
 
 const listadoPedidos = "Pedidos";
 
 // Evento del botón Guardar
 btnGuardar.addEventListener("click", () => {
-    let datos = validarFormulario();
-    if (datos != null) {
-        guardarDatos(datos);
-        mostrarDatos(); 
-    }
+  let datos = validarFormulario();
+  if (datos != null) {
+    guardarDatos(datos);
+    mostrarDatos();
+  }
 });
 
 // Validar campos formulario
 function validarFormulario() {
-    if (
-        clienteInput.value == "" ||
-        productInput.value == "" ||
-        precioInput.value == "" ||
-        imagenInput.value == ""
-    ) {
-        alert("Todos los campos del formulario son obligatorios");
-        return null;
-    } else {
-        let datosForm = {
-            cliente: clienteInput.value,
-            producto: productInput.value,
-            precio: precioInput.value,
-            imagen: imagenInput.value,
-            observacion: observacionInput.value
-        };
+  if (
+    clienteInput.value == "" ||
+    productInput.value == "" ||
+    precioInput.value == "" ||
+    imagenInput.value == ""
+  ) {
+    alert("Todos los campos del formulario son obligatorios");
+    return null;
+  } else {
+    let datosForm = {
+      cliente: clienteInput.value,
+      producto: productInput.value,
+      precio: precioInput.value,
+      imagen: imagenInput.value,
+      observacion: observacionInput.value,
+    };
 
-        console.log(datosForm);
+    console.log(datosForm);
 
-        // Limpiar formulario
-        clienteInput.value = "";
-        productInput.value = "";
-        precioInput.value = "";
-        imagenInput.value = "";
-        observacionInput.value = "";
+    // Limpiar formulario
+    clienteInput.value = "";
+    productInput.value = "";
+    precioInput.value = "";
+    imagenInput.value = "";
+    observacionInput.value = "";
 
-        return datosForm;
-    }
+    return datosForm;
+  }
 }
 
 // Guardar datos en localStorage
 function guardarDatos(datos) {
-    let pedidosPrevios = localStorage.getItem(listadoPedidos);
-    let pedidos = [];
-    if (pedidosPrevios && pedidosPrevios !== "undefined") {
-        pedidos = JSON.parse(pedidosPrevios);
-    }
-    pedidos.push(datos);
-    localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
-    alert("Datos guardados con éxito");
+  let pedidosPrevios = localStorage.getItem(listadoPedidos);
+  let pedidos = [];
+  if (pedidosPrevios && pedidosPrevios !== "undefined") {
+    pedidos = JSON.parse(pedidosPrevios);
+  }
+  pedidos.push(datos);
+  localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
+  alert("Datos guardados con éxito");
 }
 
 // Mostrar datos guardados (con filtro opcional)
 function mostrarDatos(filtro = "") {
-    let pedidosPrevios = localStorage.getItem(listadoPedidos);
-    let pedidos = [];
-    if (pedidosPrevios && pedidosPrevios !== "undefined") {
-        pedidos = JSON.parse(pedidosPrevios);
-    }
+  let pedidosPrevios = localStorage.getItem(listadoPedidos);
+  let pedidos = [];
+  if (pedidosPrevios && pedidosPrevios !== "undefined") {
+    pedidos = JSON.parse(pedidosPrevios);
+  }
 
-    borrarTabla();
+  borrarTabla();
 
-    let pedidosFiltrados = pedidos.filter((p) => {
-        let texto = filtro.toLowerCase();
-        return (
-            p.cliente.toLowerCase().includes(texto) ||
-            p.producto.toLowerCase().includes(texto)
-        );
-    });
+  let pedidosFiltrados = pedidos.filter((p) => {
+    let texto = filtro.toLowerCase();
+    return (
+      p.cliente.toLowerCase().includes(texto) ||
+      p.producto.toLowerCase().includes(texto)
+    );
+  });
 
-    pedidosFiltrados.forEach((p, i) => {
-        let fila = d.createElement("tr");
-        fila.innerHTML = `
+  pedidosFiltrados.forEach((p, i) => {
+    let fila = d.createElement("tr");
+    fila.innerHTML = `
             <td>${i + 1}</td>
             <td>${p.cliente}</td>
             <td>${p.producto}</td>
@@ -97,128 +97,127 @@ function mostrarDatos(filtro = "") {
                 <span onclick="eliminarPedido(${i})" class="btn-eliminar btn btn-danger">😒</span>
             </td>
         `;
-        tabla.appendChild(fila);
-    });
+    tabla.appendChild(fila);
+  });
 }
 
 // Quitar datos de la tabla
 function borrarTabla() {
-    let filas = d.querySelectorAll(".table tbody tr");
-    filas.forEach((f) => {
-        f.remove();
-    });
+  let filas = d.querySelectorAll(".table tbody tr");
+  filas.forEach((f) => {
+    f.remove();
+  });
 }
 
 // Eliminar pedido
 function eliminarPedido(pos) {
-    let pedidosPrevios = localStorage.getItem(listadoPedidos);
-    let pedidos = [];
-    if (pedidosPrevios && pedidosPrevios !== "undefined") {
-        pedidos = JSON.parse(pedidosPrevios);
-    }
+  let pedidosPrevios = localStorage.getItem(listadoPedidos);
+  let pedidos = [];
+  if (pedidosPrevios && pedidosPrevios !== "undefined") {
+    pedidos = JSON.parse(pedidosPrevios);
+  }
 
-    let confirmar = confirm(
-        "¿Deseas eliminar el pedido del cliente " + pedidos[pos].cliente + "?"
-    );
-    if (confirmar) {
-        pedidos.splice(pos, 1);
-        alert("Pedido eliminado con éxito");
-        localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
-        mostrarDatos(buscadorInput.value); // refresca la tabla manteniendo filtro
-    }
+  let confirmar = confirm(
+    "¿Deseas eliminar el pedido del cliente " + pedidos[pos].cliente + "?"
+  );
+  if (confirmar) {
+    pedidos.splice(pos, 1);
+    alert("Pedido eliminado con éxito");
+    localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
+    mostrarDatos(buscadorInput.value); // refresca la tabla manteniendo filtro
+  }
 }
 
 // Actualizar pedido
 function actualizarPedido(pos) {
-    let pedidosPrevios = localStorage.getItem(listadoPedidos);
-    let pedidos = [];
-    if (pedidosPrevios && pedidosPrevios !== "undefined") {
-        pedidos = JSON.parse(pedidosPrevios);
-    }
+  let pedidosPrevios = localStorage.getItem(listadoPedidos);
+  let pedidos = [];
+  if (pedidosPrevios && pedidosPrevios !== "undefined") {
+    pedidos = JSON.parse(pedidosPrevios);
+  }
 
-    clienteInput.value = pedidos[pos].cliente;
-    productInput.value = pedidos[pos].producto;
-    precioInput.value = pedidos[pos].precio;
-    imagenInput.value = pedidos[pos].imagen;
-    observacionInput.value = pedidos[pos].observacion;
+  clienteInput.value = pedidos[pos].cliente;
+  productInput.value = pedidos[pos].producto;
+  precioInput.value = pedidos[pos].precio;
+  imagenInput.value = pedidos[pos].imagen;
+  observacionInput.value = pedidos[pos].observacion;
 
-    let btnActualizar = d.querySelector(".btn-actualizar");
+  let btnActualizar = d.querySelector(".btn-actualizar");
+  btnActualizar.classList.toggle("d-none");
+  btnGuardar.classList.toggle("d-none");
+
+  function actualizar() {
+    pedidos[pos].cliente = clienteInput.value;
+    pedidos[pos].producto = productInput.value;
+    pedidos[pos].precio = precioInput.value;
+    pedidos[pos].imagen = imagenInput.value;
+    pedidos[pos].observacion = observacionInput.value;
+
+    localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
+    alert("El dato fue actualizado con éxito");
+
+    clienteInput.value = "";
+    productInput.value = "";
+    precioInput.value = "";
+    imagenInput.value = "";
+    observacionInput.value = "";
+
     btnActualizar.classList.toggle("d-none");
     btnGuardar.classList.toggle("d-none");
 
-    function actualizar() {
-        pedidos[pos].cliente = clienteInput.value;
-        pedidos[pos].producto = productInput.value;
-        pedidos[pos].precio = precioInput.value;
-        pedidos[pos].imagen = imagenInput.value;
-        pedidos[pos].observacion = observacionInput.value;
+    btnActualizar.removeEventListener("click", actualizar);
 
-        localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
-        alert("El dato fue actualizado con éxito");
+    mostrarDatos(buscadorInput.value);
+  }
 
-        clienteInput.value = "";
-        productInput.value = "";
-        precioInput.value = "";
-        imagenInput.value = "";
-        observacionInput.value = "";
-
-        btnActualizar.classList.toggle("d-none");
-        btnGuardar.classList.toggle("d-none");
-
-        btnActualizar.removeEventListener("click", actualizar);
-
-        mostrarDatos(buscadorInput.value);
-    }
-
-    btnActualizar.addEventListener("click", actualizar);
+  btnActualizar.addEventListener("click", actualizar);
 }
 
 // Evento buscador en tiempo real
 buscadorInput.addEventListener("input", () => {
-    let texto = buscadorInput.value;
-    mostrarDatos(texto);
+  let texto = buscadorInput.value;
+  mostrarDatos(texto);
 });
-
 
 //Exportar PDF
 btnExportar.addEventListener("click", () => {
-    // obtener datos de localStorage
-    let pedidosPrevios = localStorage.getItem(listadoPedidos);
-    let pedidos = [];
-    if (pedidosPrevios && pedidosPrevios !== "undefined") {
-        pedidos = JSON.parse(pedidosPrevios);
-    }
+  // obtener datos de localStorage
+  let pedidosPrevios = localStorage.getItem(listadoPedidos);
+  let pedidos = [];
+  if (pedidosPrevios && pedidosPrevios !== "undefined") {
+    pedidos = JSON.parse(pedidosPrevios);
+  }
 
-    // Crear documento
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+  // Crear documento
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
 
-    // Título
-    doc.setFontSize(18);
-    doc.text("Listado de Productos", 14, 20);
+  // Título
+  doc.setFontSize(18);
+  doc.text("Listado de Productos", 14, 20);
 
-    // Preparar columnas y filas
-    const columnas = ["#", "Cliente", "Producto", "Precio", "Observación"];
-    const filas = pedidos.map((p, index) => [
-        index + 1,
-        p.cliente,
-        p.producto,
-        p.precio,
-        p.observacion
-    ]);
+  // Preparar columnas y filas
+  const columnas = ["#", "Cliente", "Producto", "Precio", "Observación"];
+  const filas = pedidos.map((p, index) => [
+    index + 1,
+    p.cliente,
+    p.producto,
+    p.precio,
+    p.observacion,
+  ]);
 
-    // Usar autoTable
-    doc.autoTable({
-        head: [columnas],
-        body: filas,
-        startY: 30
-    });
+  // Usar autoTable
+  doc.autoTable({
+    head: [columnas],
+    body: filas,
+    startY: 30,
+  });
 
-    // Descargar PDF
-    doc.save("ListadoProductos.pdf");
+  // Descargar PDF
+  doc.save("ListadoProductos.pdf");
 });
 
 // Mostrar datos al cargar la página
 d.addEventListener("DOMContentLoaded", function () {
-    mostrarDatos();
+  mostrarDatos();
 });
