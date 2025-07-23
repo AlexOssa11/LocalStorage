@@ -13,6 +13,5 @@ Este proyecto es una aplicación web simple construida con **HTML, CSS, JavaScri
 ## 🛠️ Tecnologías Usadas
 
 - HTML5
-- CSS3
 - Bootstrap 5
 - JavaScript
