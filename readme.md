@@ -1,6 +1,6 @@
 # 📦 CRUD de Pedidos con LocalStorage y Exportación a PDF
 
-Este proyecto es una aplicación web simple construida con **HTML, CSS, JavaScript y Bootstrap** que permite registrar, editar, eliminar y buscar pedidos de productos. Además, incluye la opción de **exportar cada pedido en formato PDF** utilizando la librería `html2pdf.js`.
+Este proyecto es una aplicación web simple construida con **HTML, CSS, JavaScript y Bootstrap** que permite registrar, editar, eliminar y buscar pedidos de productos. Además, incluye la opción de **exportar cada pedido en formato PDF**.
 
 ## 🧑‍💻 Funcionalidades
 
