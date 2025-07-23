@@ -8,6 +8,7 @@ let observacionInput = d.querySelector(".observacion");
 let btnGuardar = d.querySelector(".btn-guardar");
 let tabla = d.querySelector(".table tbody");
 let buscadorInput = d.querySelector(".buscador"); 
+let btnExportar = d.querySelector(".btn-exportar");
 
 const listadoPedidos = "Pedidos";
 
@@ -16,7 +17,7 @@ btnGuardar.addEventListener("click", () => {
     let datos = validarFormulario();
     if (datos != null) {
         guardarDatos(datos);
-        mostrarDatos(); // recarga la tabla
+        mostrarDatos(); 
     }
 });
 
@@ -176,6 +177,45 @@ function actualizarPedido(pos) {
 buscadorInput.addEventListener("input", () => {
     let texto = buscadorInput.value;
     mostrarDatos(texto);
+});
+
+
+//Exportar PDF
+btnExportar.addEventListener("click", () => {
+    // obtener datos de localStorage
+    let pedidosPrevios = localStorage.getItem(listadoPedidos);
+    let pedidos = [];
+    if (pedidosPrevios && pedidosPrevios !== "undefined") {
+        pedidos = JSON.parse(pedidosPrevios);
+    }
+
+    // Crear documento
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Título
+    doc.setFontSize(18);
+    doc.text("Listado de Productos", 14, 20);
+
+    // Preparar columnas y filas
+    const columnas = ["#", "Cliente", "Producto", "Precio", "Observación"];
+    const filas = pedidos.map((p, index) => [
+        index + 1,
+        p.cliente,
+        p.producto,
+        p.precio,
+        p.observacion
+    ]);
+
+    // Usar autoTable
+    doc.autoTable({
+        head: [columnas],
+        body: filas,
+        startY: 30
+    });
+
+    // Descargar PDF
+    doc.save("ListadoProductos.pdf");
 });
 
 // Mostrar datos al cargar la página
