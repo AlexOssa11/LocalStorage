@@ -1,4 +1,4 @@
-//Variables globales
+// Variables globales
 const d = document;
 let clienteInput = d.querySelector(".cliente");
 let productInput = d.querySelector(".producto");
@@ -7,149 +7,153 @@ let imagenInput = d.querySelector(".imagen");
 let observacionInput = d.querySelector(".observacion");
 let btnGuardar = d.querySelector(".btn-guardar");
 let tabla = d.querySelector(".table tbody");
+let buscadorInput = d.querySelector(".buscador"); 
 
-
-btnGuardar.addEventListener("click", ()=> {
-    //alert(clienteInput.value);
-    let datos = validarFormulario();
-    if(datos != null){
-        guardarDatos(datos);
-    }
-    guardarDatos(datos);
-    borrarTabla();
-    mostrarDatos();
-})
-
-//Validar campos formulario
-function validarFormulario(){
-    let datosForm;
-    if(clienteInput.value == "" || productInput.value == "" || precioInput.value == "" || imagenInput.value == ""){
-        alert("Todos los campos del formulario son obligatorios");
-        return;
-    }else{
-        datosForm = {
-            cliente : clienteInput.value,
-            producto : productInput.value,
-            precio :  precioInput.value,
-            imagen: imagenInput.value,
-            observacion : observacionInput.value
-        }
-    
-    console.log(datosForm);
-    clienteInput.value = "";
-    productInput.value = "";
-    precioInput.value = "";
-    imagenInput.value = "";
-    observacionInput.value = "";
-
-    return datosForm;
-    }
-}
-
-//Funcion guardar datos en LS
 const listadoPedidos = "Pedidos";
-function guardarDatos( datos ){
-    let pedidos = [];
-    //extraer datos guardados previamente en ls
-    let pedidosPrevios = JSON.parse(localStorage.getItem(listadoPedidos));
-    //validar datos guardados previamente en ls
-    if( pedidosPrevios != null ){
-        pedidos = pedidosPrevios;
-    }
-    //agregar pedido nuevo al array
-    pedidos.push(datos);
-    //guardar 
 
-    localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
-    alert("Datos guardados con exito");
+// Evento del botón Guardar
+btnGuardar.addEventListener("click", () => {
+    let datos = validarFormulario();
+    if (datos != null) {
+        guardarDatos(datos);
+        mostrarDatos(); // recarga la tabla
+    }
+});
+
+// Validar campos formulario
+function validarFormulario() {
+    if (
+        clienteInput.value == "" ||
+        productInput.value == "" ||
+        precioInput.value == "" ||
+        imagenInput.value == ""
+    ) {
+        alert("Todos los campos del formulario son obligatorios");
+        return null;
+    } else {
+        let datosForm = {
+            cliente: clienteInput.value,
+            producto: productInput.value,
+            precio: precioInput.value,
+            imagen: imagenInput.value,
+            observacion: observacionInput.value
+        };
+
+        console.log(datosForm);
+
+        // Limpiar formulario
+        clienteInput.value = "";
+        productInput.value = "";
+        precioInput.value = "";
+        imagenInput.value = "";
+        observacionInput.value = "";
+
+        return datosForm;
+    }
 }
 
-//funcion para extraer los datos guardados previamente
-function mostrarDatos(){
+// Guardar datos en localStorage
+function guardarDatos(datos) {
+    let pedidosPrevios = localStorage.getItem(listadoPedidos);
     let pedidos = [];
-    let pedidosPrevios = JSON.parse(localStorage.getItem(listadoPedidos));
-    //validar datos guardados previamente en ls
-    if( pedidosPrevios != null ){
-        pedidos = pedidosPrevios;
+    if (pedidosPrevios && pedidosPrevios !== "undefined") {
+        pedidos = JSON.parse(pedidosPrevios);
+    }
+    pedidos.push(datos);
+    localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
+    alert("Datos guardados con éxito");
+}
+
+// Mostrar datos guardados (con filtro opcional)
+function mostrarDatos(filtro = "") {
+    let pedidosPrevios = localStorage.getItem(listadoPedidos);
+    let pedidos = [];
+    if (pedidosPrevios && pedidosPrevios !== "undefined") {
+        pedidos = JSON.parse(pedidosPrevios);
     }
 
-    //console.log(pedidos);
-    //mostrar los datos en la tabla
-    pedidos.forEach((p) => {
+    borrarTabla();
+
+    let pedidosFiltrados = pedidos.filter((p) => {
+        let texto = filtro.toLowerCase();
+        return (
+            p.cliente.toLowerCase().includes(texto) ||
+            p.producto.toLowerCase().includes(texto)
+        );
+    });
+
+    pedidosFiltrados.forEach((p, i) => {
         let fila = d.createElement("tr");
         fila.innerHTML = `
-        <td> ${i+1} </td>
-        <td> ${p.cliente} </td>
-        <td> ${p.producto} </td>
-        <td> ${p.precio} </td>
-        <td> <img src="${p.imagen}" width = "50%></td>
-        <td> ${p.observacion} </td>
-        <td>
-            <span onclick="actualizarPedido(${i})" class="btn-editar btn btn-warning"> 😁</span>
-            <span onclick="eliminarPedido(${i})" class="btn-eliminar btn btn-danger"> 😒</span>
-        </td>
+            <td>${i + 1}</td>
+            <td>${p.cliente}</td>
+            <td>${p.producto}</td>
+            <td>${p.precio}</td>
+            <td><img src="${p.imagen}" width="50%"></td>
+            <td>${p.observacion}</td>
+            <td>
+                <span onclick="actualizarPedido(${i})" class="btn-editar btn btn-warning">😁</span>
+                <span onclick="eliminarPedido(${i})" class="btn-eliminar btn btn-danger">😒</span>
+            </td>
         `;
         tabla.appendChild(fila);
     });
 }
 
-//quitar los datos de la tabla
+// Quitar datos de la tabla
 function borrarTabla() {
     let filas = d.querySelectorAll(".table tbody tr");
-    //console.log(filas)
-    filas.forEach((f)=>{
+    filas.forEach((f) => {
         f.remove();
-    })
+    });
 }
 
-//funcion eliminar pedido de la tabla
+// Eliminar pedido
 function eliminarPedido(pos) {
+    let pedidosPrevios = localStorage.getItem(listadoPedidos);
     let pedidos = [];
-    let pedidosPrevios = JSON.parse(localStorage.getItem(listadoPedidos));
-    //validar datos guardados previamente en ls
-    if( pedidosPrevios != null ){
-        pedidos = pedidosPrevios;
+    if (pedidosPrevios && pedidosPrevios !== "undefined") {
+        pedidos = JSON.parse(pedidosPrevios);
     }
-    //confirmar pedido a eliminar
-    let confirmar = confirm("¿Deseas eliminar el pedido del cliente "+pedidos[pos].cliente +"?");
-    if(confirmar){
-        //alert("Lo eliminaste");
-        pedidos.splice(pos,1);
-        alert("Pedido eliminado con exito");
-        // guardar los datos que quedaron en Ls
-        localStorage.setItem(listadoPedidos, JSON.stringify(pedidos)); 
-        borrarTabla();
-        mostrarDatos();
 
+    let confirmar = confirm(
+        "¿Deseas eliminar el pedido del cliente " + pedidos[pos].cliente + "?"
+    );
+    if (confirmar) {
+        pedidos.splice(pos, 1);
+        alert("Pedido eliminado con éxito");
+        localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
+        mostrarDatos(buscadorInput.value); // refresca la tabla manteniendo filtro
     }
 }
 
-//actualizar pedido de ls
-function actualizarPedido(pos){
+// Actualizar pedido
+function actualizarPedido(pos) {
+    let pedidosPrevios = localStorage.getItem(listadoPedidos);
     let pedidos = [];
-    let pedidosPrevios = JSON.parse(localStorage.getItem(listadoPedidos));
-    //validar datos guardados previamente en ls
-    if( pedidosPrevios != null ){
-        pedidos = pedidosPrevios;
+    if (pedidosPrevios && pedidosPrevios !== "undefined") {
+        pedidos = JSON.parse(pedidosPrevios);
     }
-    //pasar los datos al formulario para editarlos
+
     clienteInput.value = pedidos[pos].cliente;
     productInput.value = pedidos[pos].producto;
     precioInput.value = pedidos[pos].precio;
+    imagenInput.value = pedidos[pos].imagen;
     observacionInput.value = pedidos[pos].observacion;
-    //activar boton de actualizar
+
     let btnActualizar = d.querySelector(".btn-actualizar");
     btnActualizar.classList.toggle("d-none");
     btnGuardar.classList.toggle("d-none");
-    //agregar evento al boton actualizar
-    btnActualizar.addEventListener("click", function(){
+
+    function actualizar() {
         pedidos[pos].cliente = clienteInput.value;
-        pedidos[pos].producto = productoInput.value;
+        pedidos[pos].producto = productInput.value;
         pedidos[pos].precio = precioInput.value;
+        pedidos[pos].imagen = imagenInput.value;
         pedidos[pos].observacion = observacionInput.value;
-        //guardar los datos editados en ls
+
         localStorage.setItem(listadoPedidos, JSON.stringify(pedidos));
-        alert("El dato fue actualizado con exito");
+        alert("El dato fue actualizado con éxito");
 
         clienteInput.value = "";
         productInput.value = "";
@@ -160,13 +164,21 @@ function actualizarPedido(pos){
         btnActualizar.classList.toggle("d-none");
         btnGuardar.classList.toggle("d-none");
 
-        borrarTabla();
-        mostrarDatos();
-    });
+        btnActualizar.removeEventListener("click", actualizar);
+
+        mostrarDatos(buscadorInput.value);
+    }
+
+    btnActualizar.addEventListener("click", actualizar);
 }
 
-//mostrar los datos de localStorage al recargar la pagina
-d.addEventListener("DOMContentLoaded", function(){
-    borrarTabla();
+// Evento buscador en tiempo real
+buscadorInput.addEventListener("input", () => {
+    let texto = buscadorInput.value;
+    mostrarDatos(texto);
+});
+
+// Mostrar datos al cargar la página
+d.addEventListener("DOMContentLoaded", function () {
     mostrarDatos();
-})
+});

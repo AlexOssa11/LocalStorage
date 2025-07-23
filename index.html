@@ -9,33 +9,34 @@
 <body>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-7"></div>
-            <h1 class="text-center">Crud Pedidos</h1>
-            <div class="col-7">
+            <div class="col-12 text-center mb-4">
+                <h1>Crud Pedidos</h1>
+            </div>
+            
+            <div class="col-md-7">
                 <form class="p-4 border rounded bg-body-tertiary">
                     <div class="mb-3">
                         <label class="form-label">Cliente</label>
-                        <input type="text" class="cliente form-control">
+                        <input type="text" class="cliente form-control" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Producto</label>
-                        <select class="producto form-select">
-                            <option selected value="">Selecciona un Producto</option>
+                        <select class="producto form-select" required>
+                            <option value="">Selecciona un Producto</option>
                             <option value="Pizza">Pizza</option>
                             <option value="Lasagna">Lasagna</option>
                             <option value="Pasta">Pasta</option>
                             <option value="Hamburguesa">Hamburguesa</option>
                             <option value="Perro">Perro</option>
                         </select>
-
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Precio</label>
-                        <input type="number" min="20000" class="precio form-control">
+                        <input type="number" min="20000" class="precio form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Imagen</label>
-                        <input type="text" class="imagen form-control">
+                        <label class="form-label">Imagen (URL)</label>
+                        <input type="url" class="imagen form-control" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Observacion</label>
@@ -44,10 +45,14 @@
 
                     <button type="button" class="btn-guardar btn btn-primary">Guardar Pedido</button>
                     <button type="button" class="d-none btn-actualizar btn btn-success">Actualizar pedido</button>
-                    </form>
+                </form>
             </div>
-            <div class="col-7">
-                <table class="table mt-5">
+            
+            <div class="col-md-7 mt-4">
+                <div class="mb-3">
+                    <input type="text" class="form-control buscador" placeholder="Buscar por cliente o producto...">
+                </div>
+                <table class="table">
                     <thead>
                         <tr>
                             <th>#</th>
