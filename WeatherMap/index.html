@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>App del Clima</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <div class="container">
-        <h1><i class="fas fa-cloud-sun"></i> App del Clima</h1>
-        
-        <div class="search-box">
-            <input type="text" id="city-input" placeholder="Ingresa una ciudad...">
-            <button id="search-btn"><i class="fas fa-search"></i> Buscar</button>
-        </div>
-        
-        <div id="weather-info">
-            <!-- Aquí se mostrará la información del clima -->
-        </div>
-        
-        <div id="error-message" class="error"></div>
-        
-        <div class="footer">
-            <p>Datos proporcionados por OpenWeatherMap</p>
-            <p>API Key: 3da4c045ccb32fcf1b06c3663a2908a6</p>
-        </div>
+      <h1><i class="fas fa-cloud-sun"></i> App del Clima</h1>
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="city-input"
+          placeholder="Ingresa una ciudad..."
+        />
+        <button id="search-btn"><i class="fas fa-search"></i> Buscar</button>
+      </div>
+
+      <div id="weather-info">
+        <!-- Aquí se mostrará la información del clima -->
+      </div>
+
+      <div id="error-message" class="error"></div>
+
+      <div class="footer">
+        <p>Datos proporcionados por OpenWeatherMap</p>
+        <p>API Key: 3da4c045ccb32fcf1b06c3663a2908a6</p>
+      </div>
     </div>
 
     <script src="WeatherApi.js"></script>
-</body>
+  </body>
 </html>
