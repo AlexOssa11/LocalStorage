@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(to right, #3498db, #2c3e50);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+h1 i {
+    color: #3498db;
+    margin-right: 10px;
+}
+
+.search-box {
+    display: flex;
+    margin-bottom: 25px;
+}
+
+#city-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px 0 0 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+#city-input:focus {
+    border-color: #3498db;
+}
+
+#search-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#search-btn:hover {
+    background-color: #2980b9;
+}
+
+#weather-info {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.weather-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.location {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.temp {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #e74c3c;
+}
+
+.weather-icon {
+    font-size: 60px;
+    margin: 10px 0;
+    color: #3498db;
+}
+
+.description {
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+    color: #2c3e50;
+}
+
+.details {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detail-label {
+    font-size: 14px;
+    color: #7f8c8d;
+    margin-bottom: 5px;
+}
+
+.detail-value {
+    font-weight: bold;
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+.error {
+    color: #e74c3c;
+    margin-top: 15px;
+    font-weight: bold;
+    display: none;
+}
+
+.footer {
+    margin-top: 25px;
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.footer p {
+    margin: 5px 0;
+}
+
+.loading {
+    font-size: 18px;
+    margin: 20px 0;
+    display: none;
+}
